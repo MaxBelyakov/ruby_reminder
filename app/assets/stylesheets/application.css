@@ -11,3 +11,101 @@
  *= require_self
  *= require_tree .
  */
+/* ====================================================
+ Styles
+ ==================================================== */
+
+/* Navigation panel */
+/* ==================================================== */
+body {
+  overflow-y: scroll;
+  background: url('line.png') repeat;
+  font-family: 'lucida grande','Lucida Sans Unicode', tahoma, sans-serif;
+  font-size: small;
+}
+.bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 52px;
+  background: url("line1.jpg");
+  border-bottom: 1px solid #CCC;
+  z-index: 1; /* To place all body's opacity elements on the previous stack */
+}
+.button {
+  color: #FFD700;
+  background: #000;
+  text-decoration: none;
+  padding: 2.5px 10px 2.5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.7;
+}
+.button:hover {
+  opacity: 0.8;
+}
+.main_title {
+  position: relative;
+  top: 10px;
+  text-decoration: none;
+  color: #FFD700;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 1);
+  font-size: 18pt;
+}
+#search_box {
+  position: relative;
+  top: 8px;
+  margin-left: 6px;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px #CFCFCF inset;
+  width: 350px;
+  height: 20px;
+}
+/* ==================================================== */
+
+/* Left side */
+/* ==================================================== */
+#login_form {
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  font-size: 8pt;
+}
+/* ==================================================== */
+
+/* Working place */
+/* ==================================================== */
+.container {
+  border: 1px solid transparent; /* to remove gap */
+}
+
+.answers_box, .search_form, #addnew_form {
+  margin-left: 30%;
+  margin-right: 30%;
+  width: 560px;
+  text-align: center;
+}
+.answers_box_addnew {
+  border: 1px solid #CCC;
+  box-shadow: 0 3px 6px #CFCFCF inset;
+  height: 19px;
+  border-radius: 4px;
+  width: 422px;
+}
+/* ==================================================== */
+
+
+/* Registration page */
+/* ==================================================== */
+.no_field {
+  font-size: 8pt;
+  color: red;
+}
+.registration_box {
+  margin-left: 30%;
+  margin-right: 30%;
+}
+/* ==================================================== */
