@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  last_date: 2013-02-26
+  position: 1
+  red_val: 1
+
+two:
+  name: MyString
+  last_date: 2013-02-26
+  position: 1
+  red_val: 1
