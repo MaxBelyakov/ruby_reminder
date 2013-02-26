@@ -28,7 +28,29 @@
     </div>
   </div>
   <hr class='answers_box'>
-  <ul id='sortable'></ul>
+  <ul id='sortable'>
+    <% Contact.all.each do |c| %>
+      <li>
+        <div class=<%= "contact_container_#{@color}" %> id=<%= c.id %>>
+          <div class="name_contact">
+            <div class="contact_name" id=<%= "contact_name_#{c.id}" %>><%= c.name %></div>
+            <div class="contact_edit" id=<%= "contact_edit_#{c.id}" %>>
+              <%= image_tag "edit.png" %>
+            </div>
+            <div class="contact_delete" id=<%= "contact_delete_#{c.id}" %>>
+              <%= image_tag "no.png" %>
+            </div>
+          </div>
+          <div class="contact_date_diff">
+            <div class="contact_update" id=<%= "contact_update_#{c.id}" %>>
+              <%= image_tag "update.png" %>
+            </div>
+            <%= c.last_date %>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
   <hr class='answers_box'>
 </div>
 <div class='addnew'>
