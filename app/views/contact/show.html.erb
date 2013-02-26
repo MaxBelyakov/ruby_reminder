@@ -1,2 +1,42 @@
-<h1>Contact#show</h1>
-<p>Find me in app/views/contact/show.html.erb</p>
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Title</title>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  
+<div class="bar">
+  <div class="search_form">
+    <a href='#' class="main_title">Reminder</a>
+    <input type="text" name="search" autocomplete="off" id="search_box" maxlength="400" autofocus>
+  </div>
+</div>
+
+<div class='container'>
+  <div class='answers_box' id='op_element'>
+    <div class='contacts_title'>
+      <span class='contacts_title_name'>
+        Name
+      </span>
+      <span class='contacts_title_last_contact'>
+        Last contact
+      </span>
+    </div>
+  </div>
+  <hr class='answers_box'>
+  <ul id='sortable'></ul>
+  <hr class='answers_box'>
+</div>
+<div class='addnew'>
+  <div id='addnew_form'>
+    <input type='text' class='answers_box_addnew' maxlength='28'>
+    <input type='submit' id='add_new_button' value='Add new' class='button'>
+  </div>
+</div>
+
+</body>
+</html>

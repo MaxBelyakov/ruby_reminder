@@ -1,3 +1,108 @@
-// Place all the styles related to the Contact controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#red_set { 
+  border:1px solid gray;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  transition:border linear .2s,box-shadow linear .2s;
+  -moz-transition:border linear .2s,-moz-box-shadow linear .2s;
+  -webkit-transition:border linear .2s,-webkit-box-shadow linear;
+  background-color: rgba(255, 0, 0, 0.5);
+  text-align: center;
+}
+
+#sortable { 
+  list-style-type: none;
+  margin-left: 30%;
+  margin-right: 30%;
+  width: 560px;
+  padding: 0;
+}
+#sortable li {
+  cursor:move;
+}
+.contact_name {
+  max-width: 370px;
+  color: black;
+  float: left;
+  line-height: 25px;
+  margin: 0 5px;
+}
+#contact_input {
+  width: 200px;
+  border:2px solid gray;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+  transition:border linear .2s,box-shadow linear .2s;
+  -moz-transition:border linear .2s,-moz-box-shadow linear .2s;
+  -webkit-transition:border linear .2s,-webkit-box-shadow linear;
+  background-color: transparent;
+}
+.contact_edit {
+  margin: 0 10px;
+  float: left;
+  cursor: pointer;
+  opacity: 0.7;
+  line-height: 25px;
+  display: none;
+}
+.contact_delete {
+  margin: 6 0 0 10px;
+  float: left;
+  cursor: pointer;
+  opacity: 0.7;
+  line-height: 25px;
+  display: none;
+}
+.contact_update {
+  margin-left: -20px;
+  cursor: pointer;
+  opacity: 0.7;
+  line-height: 25px;
+  display: none;
+  position: absolute;
+}
+
+.contact_container_green, .contact_container_yellow, .contact_container_red {
+  width: 560px;
+  height: 26px;
+  margin: 15px 0;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+}
+.contact_container_green {
+  background-color: rgba(0, 255, 0, 0.3);
+}
+.contact_container_yellow {
+  background-color: rgba(255, 255, 0, 0.3);
+}
+.contact_container_red {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+.contact_date_diff {
+  margin-right: 5px;
+  float: right;
+  line-height: 25px;
+}
+.contacts_title {
+  margin-top: 70px;
+  width: 560px;
+  height: 16px;
+  font-size: 10px;
+}
+.contacts_title_name {
+  float: left;
+}
+.contacts_title_name:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+.contacts_title_last_contact {
+  float: right;
+}
+.contacts_title_last_contact:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
