@@ -5,7 +5,7 @@ class AddnewController < ApplicationController
     if find_name.length > 0
       render :json => { answer: 'duplicate!' }
     else
-      # Add to Model here
+      Contact.create(:name => params['name'], :last_date => Date.today.to_s, :position => params['position'], :red_val => 30)
       render :json => { answer: 'added' }
     end
   end

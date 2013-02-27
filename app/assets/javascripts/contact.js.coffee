@@ -106,19 +106,24 @@ class @Contact
 
 
   add_new_contact: ->
-    new_contact = $('.answers_box_addnew').attr('value')
+    new_contact = $('.answers_box_addnew').val()
     if (new_contact == '')
       return false
 
     # Find last position
     position = $('.contact_name').length
-    $.post(gon.addnew_path, {
-      new_contact: new_contact,
-      position:position
-    }, (data) =>
-      @search_start('')
-      $('.answers_box_addnew').attr('value','')
-    )
+    $.ajax({
+      url: gon.addnew_path,
+      data: {
+        name: new_contact,
+        position: position
+      },
+      type: 'post',
+      success: (msg) =>
+        console.log(msg)
+        @search_start('')
+        $('.answers_box_addnew').val('')
+    })
 
 
   delete_contact: (contact_id) ->
