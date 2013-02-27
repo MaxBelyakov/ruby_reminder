@@ -1,8 +1,6 @@
 class @Contact
   constructor: ->
-    @ADD_CONTACT = ""
     @UPDATE_CONTACT = ""
-    @DELETE_CONTACT = ""
     @LOAD_SETTINGS = ""
     @SEARCH = ""
 
@@ -127,11 +125,15 @@ class @Contact
 
 
   delete_contact: (contact_id) ->
-    $.post(@DELETE_CONTACT, {
-      contact_id: contact_id
-    }, () =>
-      @search_start('')
-    )
+    $.ajax({
+      url: gon.delete_path,
+      data: {
+        id: contact_id
+      },
+      type: 'post',
+      success: (msg) =>
+        @search_start('')
+    })
 
 
   update_list: ->
@@ -237,10 +239,8 @@ class @Contact
         $(@).parent().find('.contact_delete').hide()
         enable = 0
 
-
-    #
-    $('.contact_delete').click( (e) ->
-      contact_id = $(@).parent().find('.contact_name').attr('id')
+    $('.contact_delete').click( (e) =>
+      contact_id = $(@).parent().parent().attr('id')
       if (confirm('Delete this field?'))
         @delete_contact(contact_id)
     )
