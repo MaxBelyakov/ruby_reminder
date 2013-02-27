@@ -32,21 +32,49 @@ class ContactController < ApplicationController
   end
 
   def show
-    #Contact.all.each do |c|
+    html_code = ''
 
-    @red = 30
-    date_array = date_count("2012-01-26")
+    Contact.all.each do |c|
 
+      red = c.red_val
+      date_array = date_count(c.last_date)
 
-    if @red == 0
-      @color = "green"
-    elsif date_array["in_days"] > @red
-      @color = "red"
-    elsif date_array["in_days"] > @red / 2
-      @color = "yellow"
-    else
-      @color = "green"
+      if red == 0
+        color = "green"
+      elsif date_array["in_days"] > red
+        color = "red"
+      elsif date_array["in_days"] > red / 2
+        color = "yellow"
+      else
+        color = "green"
+      end
+
+      html_code += '<li>'
+      html_code += '<div class="contact_container_' + color.to_s + '" id="' + c.id.to_s + '">'
+      # ===name_container===
+      html_code += '<div class="name_container">'
+      html_code += '<div class="contact_name" id="contact_name_' + c.id.to_s + '">' + c.name.to_s + '</div>'
+      html_code += '<div class="contact_edit" id="contact_edit_' + c.id.to_s + '">'
+      html_code += '<img src="edit.png"></img>' 
+      html_code += '</div>'
+      html_code += '<div class="contact_delete" id="contact_delete_' + c.id.to_s + '">'
+      html_code += '<img src="no.png"></img>' 
+      html_code += '</div>'
+      html_code += '</div>'
+      # ===/name_container===
+      # ===contact_date===
+      html_code += '<div class="contact_date_diff">'
+      html_code += '<div class="contact_update" id="contact_update_' + c.id.to_s + '">'
+      html_code += '<img src="update.png"></img>' 
+      html_code += '</div>'
+      html_code += date_array["date_diff"]
+      html_code += '</div>'
+      # ===/contact_date===
+      html_code += '</div>'
+      html_code += '</li>'
+
     end
-
+    @html_code = html_code.html_safe
   end
+
 end
