@@ -1,12 +1,13 @@
 class @Contact
   constructor: ->
-    @search_start('')
-
     @ADD_CONTACT = ""
     @UPDATE_CONTACT = ""
     @DELETE_CONTACT = ""
     @LOAD_SETTINGS = ""
     @SEARCH_FILE = ""
+
+    @search_start('')
+
 
   search_start: (search_term) ->
     if search_term != ''
@@ -55,4 +56,39 @@ class @Contact
         contact_obj = $(@).parent().find('.contact_name')
 
         # Load current settings
+        $.post(@LOAD_SETTINGS, {
+          id: $(contact_obj).attr('id'),
+          name: contact_text
+        }, (data) ->
+          contact_obj.html(data)
+          $('#contact_input').focus()
 
+          # Deselect text inside
+          $('#contact_input').val($('#contact_input').val())
+        )
+
+        # Hide buttons
+        $(@).hide()
+        $(@).parent().find('.contact_delete').hide()
+        enable = 0
+
+
+    #
+    $('.contact_delete').click( (event) ->
+      contact_id = $(@).parent().find('.contact_name').attr('id')
+      if (confirm('Delete this field?'))
+        delete_contact(contact_id)
+    )
+
+    $('.contact_update').click( (event) ->
+      contact_obj = $(@).parent().parent().find('.contact_name')
+      $.post(UPDATE_DATE_FILE, {
+        id: $(contact_obj).attr('id')
+      }, (data) =>
+        @search_start('');
+      )
+    )
+
+
+$(document).ready () =>
+  contact = new @Contact()
