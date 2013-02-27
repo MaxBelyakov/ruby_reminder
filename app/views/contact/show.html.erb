@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-
-<html>
-
-<head>
-  <title>Title</title>
-  <meta charset="utf-8">
-</head>
-
-<body>
-  
 <div class="bar">
   <div class="search_form">
     <a href='#' class="main_title">Reminder</a>
@@ -30,26 +19,25 @@
   <hr class='answers_box'>
   <ul id='sortable'>
     <% @to_draw_array.each do |c| %>
-    <li> 
-      <div class=<%= "contact_container_#{c['color']}" %> id=<%= "#{c['id']}" %>>
-        <div class="name_container">
-          <div class="contact_name" id=<%= "contact_name_#{c['id']}" %>><%= c['name'] %></div>
-          <div class="contact_edit" id=<%= "contact_edit_#{c['id']}" %>>
-            <%= image_tag "edit.png" %>
+      <li> 
+        <div class=<%= "contact_container_#{c['color']}" %> id=<%= "#{c['id']}" %>>
+          <div class="name_container">
+            <div class="contact_name" id=<%= "contact_name_#{c['id']}" %>><%= c['name'] %></div>
+            <div class="contact_edit" id=<%= "contact_edit_#{c['id']}" %>>
+              <%= image_tag "edit.png" %>
+            </div>
+            <div class="contact_delete" id=<%= "contact_delete_#{c['id']}" %>>
+              <%= image_tag "no.png" %>
+            </div>
           </div>
-          <div class="contact_delete" id=<%= "contact_delete_#{c['id']}" %>>
-            <%= image_tag "no.png" %>
+          <div class="contact_date_diff">
+            <div class="contact_update" id=<%= "contact_update_#{c['id']}" %>>
+              <%= image_tag "update.png" %>
+            </div>
+            <%= c['date'] %>
           </div>
         </div>
-        <div class="contact_date_diff">
-          <div class="contact_update" id=<%= "contact_update_#{c['id']}" %>>
-            <%= image_tag "update.png" %>
-          </div>
-          <%= c['date'] %>
-        </div>
-      </div>
-    </li>
-
+      </li>
     <% end %>
   </ul>
   <hr class='answers_box'>
@@ -60,6 +48,3 @@
     <input type='submit' id='add_new_button' value='Add new' class='button'>
   </div>
 </div>
-
-</body>
-</html>

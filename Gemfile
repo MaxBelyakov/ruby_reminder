@@ -8,6 +8,7 @@ gem 'rails', '3.2.12'
 gem 'pg'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'gon', '3.0.5'
 
 
 # Gems used only for assets and not required
