@@ -32,10 +32,9 @@ class ContactController < ApplicationController
   end
 
   def show
-    html_code = ''
+    @to_draw_array = []
 
     Contact.all.each do |c|
-
       red = c.red_val
       date_array = date_count(c.last_date)
 
@@ -49,32 +48,8 @@ class ContactController < ApplicationController
         color = "green"
       end
 
-      html_code += '<li>'
-      html_code += '<div class="contact_container_' + color.to_s + '" id="' + c.id.to_s + '">'
-      # ===name_container===
-      html_code += '<div class="name_container">'
-      html_code += '<div class="contact_name" id="contact_name_' + c.id.to_s + '">' + c.name.to_s + '</div>'
-      html_code += '<div class="contact_edit" id="contact_edit_' + c.id.to_s + '">'
-      html_code += '<img src="/assets/edit.png"></img>' 
-      html_code += '</div>'
-      html_code += '<div class="contact_delete" id="contact_delete_' + c.id.to_s + '">'
-      html_code += '<img src="/assets/no.png"></img>' 
-      html_code += '</div>'
-      html_code += '</div>'
-      # ===/name_container===
-      # ===contact_date===
-      html_code += '<div class="contact_date_diff">'
-      html_code += '<div class="contact_update" id="contact_update_' + c.id.to_s + '">'
-      html_code += '<img src="/assets/update.png"></img>' 
-      html_code += '</div>'
-      html_code += date_array["date_diff"]
-      html_code += '</div>'
-      # ===/contact_date===
-      html_code += '</div>'
-      html_code += '</li>'
-
+      @to_draw_array.push({'id' => c.id, 'name' => c.name, 'color' => color, 'date' => date_array["date_diff"]})
     end
-    @html_code = html_code.html_safe
   end
 
 end
