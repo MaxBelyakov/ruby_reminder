@@ -4,7 +4,7 @@ class @Contact
     @UPDATE_CONTACT = ""
     @DELETE_CONTACT = ""
     @LOAD_SETTINGS = ""
-    @SEARCH_FILE = ""
+    @SEARCH = ""
 
     @search_start('')
     @run()
@@ -21,27 +21,27 @@ class @Contact
       $("#sortable").disableSelection()
 
       # Triggered when the user stopped sorting and the DOM position has changed
-      $('#sortable').sortable().bind 'sortupdate', () ->
-        update_list()
+      $('#sortable').sortable().bind 'sortupdate', () =>
+        @update_list()
 
       # Add new POST
-      $('.answers_box_addnew').keypress (e) ->
+      $('.answers_box_addnew').keypress (e) =>
         if e.keyCode == 13
-          add_new_contact()
+          @add_new_contact()
 
       # Click function
-      $(@).click (e) ->
+      $(@).click (e) =>
         # if click outside the <input> and if <input> exists
         if ($(e.target).parent().attr('class') != 'contact_name' & $('#contact_input').length)
-          close_settings()
+          @close_settings()
 
 
       # Key press functions
-      $(@).keydown( (e) ->
+      $(@).keydown( (e) =>
         # Contact name
         if ($(e.target).parent().attr('class') == 'contact_name')
           if (e.keyCode == 13)
-            close_settings()
+            @close_settings()
           else if (e.keyCode == 27)
             # Return old value
             $(e.target).parent().html(contact_text)
@@ -59,16 +59,114 @@ class @Contact
       )
 
     # Button actions
-    $('#add_new_button').click () ->
-      add_new_contact()
+    $('#add_new_button').click () =>
+      @add_new_contact()
 
     # Sort by name
-    $('.contacts_title_name').click () ->
-      sort_by_name()
+    $('.contacts_title_name').click () =>
+      @sort_by_name()
 
     # Sort by last contact
-    $('.contacts_title_last_contact').click () ->
-      sort_by_last_contact();
+    $('.contacts_title_last_contact').click () =>
+      @sort_by_last_contact();
+
+
+  search_start: (search_term) ->
+    # Enable and disable (if you use search) the jQuery sortable UI
+    if (search_term != '')
+      $('#sortable').sortable({ disabled: true })
+    else
+      $('#sortable').sortable({ disabled: false })
+
+    # Display contacts
+    $.post(SEARCH, {
+      search_term: search_term,
+      order:'position'
+    }, (data) =>
+      @draw_contacts(data)
+    )
+
+
+  sort_by_name: ->
+    $.post(@SEARCH, {
+      search_term: '',
+      order: 'name'
+    }, (data) =>
+      @draw_contacts(data)
+    )
+
+
+  sort_by_last_contact: ->
+    $.post(@SEARCH, {
+      search_term: '',
+      order: 'last_date'
+    }, (data) =>
+      @draw_contacts(data)
+    )
+
+
+  add_new_contact: ->
+    new_contact = $('.answers_box_addnew').attr('value')
+    if (new_contact == '')
+      return false
+
+    # Find last position
+    position = $('.contact_name').length
+    $.post(gon.addnew_path, {
+      new_contact: new_contact,
+      position:position
+    }, (data) =>
+      @search_start('')
+      $('.answers_box_addnew').attr('value','')
+    )
+
+
+  delete_contact: (contact_id) ->
+    $.post(@DELETE_CONTACT, {
+      contact_id: contact_id
+    }, () =>
+      @search_start('')
+    )
+
+
+  update_list: ->
+    # Forming the variables for ajax request
+    $('.contact_name').each( (i,name) =>
+      id = $(this).attr('id')
+      name = $(name).text()
+      $.post(@UPDATE_LIST, {
+        id: id,
+        name: name,
+        position: i
+      })
+    )
+
+
+  update_colors: (id, red) ->
+    $.post(@UPDATE_COLOR, {
+      id: id,
+      red: red
+    }, (data) ->
+      $('#contact_container_'+id).attr('class',data)
+    )
+
+
+  close_settings: () ->
+    # Find active settings
+    object = $('#contact_input').parent()
+    # Update colors
+    contact_red = object.find('#red_set').attr('value')
+
+    if (contact_red == '')
+      contact_red = 0
+
+    update_colors(object.attr('id'), contact_red)
+    # Close <input> and save new values
+    contact_text = object.find('#contact_input').attr('value')
+    object.html(contact_text)
+
+    # Update list
+    @update_list()
 
 
   search_start: (search_term) ->
@@ -77,7 +175,7 @@ class @Contact
     else
       $('#sortable').sortable({ disabled: false; })
 
-    $.post(@SEARCH_FILE,
+    $.post(@SEARCH,
       {
         search_term: search_term,
         order: 'position'
@@ -109,7 +207,7 @@ class @Contact
 
     enable = 0
 
-    $('.contact_edit').click (event) ->
+    $('.contact_edit').click (e) ->
       if enable == 0
         enable = 1
 
@@ -136,15 +234,15 @@ class @Contact
 
 
     #
-    $('.contact_delete').click( (event) ->
+    $('.contact_delete').click( (e) ->
       contact_id = $(@).parent().find('.contact_name').attr('id')
       if (confirm('Delete this field?'))
-        delete_contact(contact_id)
+        @delete_contact(contact_id)
     )
 
-    $('.contact_update').click( (event) ->
+    $('.contact_update').click( (e) ->
       contact_obj = $(@).parent().parent().find('.contact_name')
-      $.post(UPDATE_DATE_FILE, {
+      $.post(@UPDATE_DATE, {
         id: $(contact_obj).attr('id')
       }, (data) =>
         @search_start('');
