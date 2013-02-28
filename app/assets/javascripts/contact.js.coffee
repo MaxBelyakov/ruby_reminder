@@ -240,7 +240,7 @@ class @Contact
         enable = 0
 
     $('.contact_delete').click( (e) =>
-      contact_id = $(@).parent().parent().attr('id')
+      contact_id = $(e.target).parent().parent().parent().attr('id')
       if (confirm('Delete this field?'))
         @delete_contact(contact_id)
     )

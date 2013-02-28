@@ -1,7 +1,7 @@
 class DeleteController < ApplicationController
 
   def index
-    Contact.find(params['id']).delete
+    Contact.find_by_id(params['id']).try(:delete)
     render :json => { }
   end
 
