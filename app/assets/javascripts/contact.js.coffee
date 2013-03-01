@@ -77,7 +77,8 @@ class @Contact
       $('#sortable').sortable({ disabled: false })
 
     # Display contacts
-    $.post(SEARCH, {
+    console.log(search_term)
+    $.post(gon.search_path, {
       search_term: search_term,
       order:'position'
     }, (data) =>
@@ -174,22 +175,6 @@ class @Contact
 
     # Update list
     @update_list()
-
-
-  search_start: (search_term) ->
-    if search_term != ''
-      $('#sortable').sortable({ disabled: true; })
-    else
-      $('#sortable').sortable({ disabled: false; })
-
-    $.post(@SEARCH,
-      {
-        search_term: search_term,
-        order: 'position'
-      },
-      (data) =>
-        @draw_contacts()
-    )
 
 
   draw_contacts: (data) ->

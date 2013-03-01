@@ -3,6 +3,7 @@ Reminder::Application.routes.draw do
 
   post 'addnew' => 'addnew#index'
   post 'delete' => 'delete#index'
+  post 'search' => 'search#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
