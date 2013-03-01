@@ -31,8 +31,8 @@ class ContactController < ApplicationController
     }
   end
 
-  def show
-    @to_draw_array = []
+  def collect
+    to_draw_array = []
 
     Contact.all.each do |c|
       red = c.red_val
@@ -48,8 +48,10 @@ class ContactController < ApplicationController
         color = "green"
       end
 
-      @to_draw_array.push({'id' => c.id, 'name' => c.name, 'color' => color, 'date' => date_array["date_diff"]})
+      to_draw_array.push({'id' => c.id, 'name' => c.name, 'color' => color, 'date' => date_array["date_diff"]})
     end
+
+    render :json => { answer: to_draw_array }
   end
 
 end

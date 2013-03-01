@@ -2,10 +2,9 @@ class @Contact
   constructor: ->
     @UPDATE_CONTACT = ""
     @LOAD_SETTINGS = ""
-    @SEARCH = ""
 
     @search_start('')
-    @run()
+    #@run()
 
 
   run: ->
@@ -76,14 +75,17 @@ class @Contact
     else
       $('#sortable').sortable({ disabled: false })
 
-    # Display contacts
-    console.log(search_term)
-    $.post(gon.search_path, {
-      search_term: search_term,
-      order:'position'
-    }, (data) =>
-      @draw_contacts(data)
-    )
+    # Search contacts
+    $.ajax({
+      url: gon.contact_path,
+      data: {
+        search_term: search_term,
+        order: 'position'
+      },
+      type: 'post',
+      success: (obj) =>
+        @draw_contacts(obj['answer'])
+    })
 
 
   sort_by_name: ->
@@ -178,8 +180,12 @@ class @Contact
 
 
   draw_contacts: (data) ->
-    # Display data
-    $('#sortable').html(data)
+    $('#sortable').html('')
+
+    for i in [0...data.length]
+      # Display data  
+      $('#sortable').append(SMT['singlecontact'](data[i]))
+
     $('.container').slideDown(1000)
 
     # Hide settings

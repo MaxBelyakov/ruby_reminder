@@ -80,6 +80,7 @@ body {
 /* Working place */
 /* ==================================================== */
 .container {
+  display: none;
   border: 1px solid transparent; /* to remove gap */
 }
 

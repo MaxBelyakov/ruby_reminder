@@ -14,3 +14,6 @@
 //= require jquery_ujs
 //= require jquery.ui.all
 //= require_tree .
+// SMT rails
+//= require mustache
+//= require_tree ../../templates

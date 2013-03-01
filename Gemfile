@@ -9,6 +9,8 @@ gem 'pg'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'gon', '3.0.5'
+gem 'mustache-rails', :require => 'mustache/railtie'
+gem 'smt_rails', '>= 0.2.2'
 
 
 # Gems used only for assets and not required

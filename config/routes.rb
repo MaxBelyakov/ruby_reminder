@@ -1,9 +1,9 @@
 Reminder::Application.routes.draw do
-  get "contact/show"
+  get 'contact/show'
 
   post 'addnew' => 'addnew#index'
   post 'delete' => 'delete#index'
-  post 'search' => 'search#index'
+  post 'contact' => 'contact#collect'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
