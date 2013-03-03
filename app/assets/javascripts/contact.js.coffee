@@ -1,10 +1,9 @@
 class @Contact
   constructor: ->
-    @UPDATE_CONTACT = ""
     @LOAD_SETTINGS = ""
 
     @search_start('')
-    #@run()
+    @run()
 
 
   run: ->
@@ -121,7 +120,6 @@ class @Contact
       },
       type: 'post',
       success: (msg) =>
-        console.log(msg)
         @search_start('')
         $('.answers_box_addnew').val('')
     })
@@ -236,13 +234,17 @@ class @Contact
         @delete_contact(contact_id)
     )
 
-    $('.contact_update').click( (e) ->
-      contact_obj = $(@).parent().parent().find('.contact_name')
-      $.post(@UPDATE_DATE, {
-        id: $(contact_obj).attr('id')
-      }, (data) =>
-        @search_start('');
-      )
+    $('.contact_update').click( (e) =>
+      contact_id = $(e.target).parent().parent().parent().attr('id')
+      $.ajax({
+        url: gon.update_path,
+        data: {
+          id: contact_id
+        },
+        type: 'post',
+        success: (msg) =>
+          @search_start('')
+      })
     )
 
 
