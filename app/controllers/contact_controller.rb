@@ -33,11 +33,17 @@ class ContactController < ApplicationController
 
   def collect
     to_draw_array = []
+    contacts_array = []
 
-    Contact.all.each do |c|
+    if params['search_term'] == ''
+      contacts_array = Contact.all
+    else
+      contacts_array = Contact.find(:all, :conditions => ["name like ?", "%" + params['search_term'] + "%"])
+    end
+
+    contacts_array.each do |c|
       red = c.red_val
       date_array = date_count(c.last_date)
-
       if red == 0
         color = "green"
       elsif date_array["in_days"] > red
@@ -47,7 +53,6 @@ class ContactController < ApplicationController
       else
         color = "green"
       end
-
       to_draw_array.push({'id' => c.id, 'name' => c.name, 'color' => color, 'date' => date_array["date_diff"]})
     end
 
