@@ -147,7 +147,7 @@ class @Contact
       })
 
 
-  update_colors: (id, red) ->
+  update_color: (id, red) ->
     $.ajax({
       url: gon.update_color_path,
       data: {
@@ -156,7 +156,7 @@ class @Contact
       },
       type: 'post',
       success: (data) =>
-        $('#'+id).attr('class', data)
+        $('#' + id).attr('class', 'contact_container_' + data["answer"])
     })
 
 
@@ -164,15 +164,15 @@ class @Contact
     # Find active settings
     object = $('#contact_input').parent()
     # Update colors
-    contact_red = object.find('#red_set').attr('value')
+    contact_red = object.find('#red_set').val()
 
     if (contact_red == '')
       contact_red = 0
 
-    @update_colors(object.parent().parent().attr('id'), contact_red)
+    @update_color(object.parent().parent().attr('id'), contact_red)
 
     # Close <input> and save new values
-    contact_text = object.find('#contact_input').attr('value')
+    contact_text = object.find('#contact_input').val( )
     object.html(contact_text)
 
     # Update list
@@ -222,6 +222,7 @@ class @Contact
           },
           type: 'post',
           success: (data) =>
+            
             contact_obj.html(SMT['edit'](data))
             $('#contact_input').focus()
             # Deselect text inside

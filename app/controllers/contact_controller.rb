@@ -81,10 +81,13 @@ class ContactController < ApplicationController
   end
 
 
-
+  # Update selected contact's red value and define new color
   def update_color
-    Contact.find_by_id(params['id']).update_attributes(:red_val => params['red'])
-    render :json => { }
+    red = params['red'].to_i
+    Contact.find_by_id(params['id']).update_attributes(:red_val => red)
+    last_date = Contact.find_by_id(params['id']).last_date.to_s
+    new_array = define_parameters(last_date, red)
+    render :json => { answer: new_array['color'] }
   end
 
 
