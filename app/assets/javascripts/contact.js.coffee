@@ -1,8 +1,9 @@
 class @Contact
   constructor: ->
+    # Show all user's contacts
     @search_start('')
 
-    # Search contacts
+    # Search contacts by name
     $('#search_box').keyup (e) =>
       search_term = $(e.target).val()
       @search_start(search_term)
@@ -15,7 +16,7 @@ class @Contact
     $('#sortable').sortable().bind 'sortupdate', () =>
       @update_list()
 
-    # Add new POST
+    # Listening Enter key when adding new contact
     $('.answers_box_addnew').keypress (e) =>
       if e.keyCode == 13
         @add_new_contact()
@@ -25,7 +26,6 @@ class @Contact
       # if click outside the <input> and if <input> exists
       if ($(e.target).parent().attr('class') != 'contact_name' & $('#contact_input').length)
         @close_settings()
-
 
     # Key press functions
     $(document).keydown (e) =>
@@ -76,8 +76,8 @@ class @Contact
         order: 'position'
       },
       type: 'post',
-      success: (obj) =>
-        @draw_contacts(obj['answer'])
+      success: (data) =>
+        @draw_contacts(data['answer'])
     })
 
 
@@ -113,7 +113,7 @@ class @Contact
         position: position
       },
       type: 'post',
-      success: (msg) =>
+      success: (data) =>
         @search_start('')
         $('.answers_box_addnew').val('')
     })
@@ -126,22 +126,25 @@ class @Contact
         id: contact_id
       },
       type: 'post',
-      success: (msg) =>
+      success: (data) =>
         @search_start('')
     })
 
 
   update_list: ->
-    # Forming the variables for ajax request
-    $('.contact_name').each( (i,name) =>
-      id = $(this).attr('id')
-      name = $(name).text()
-      $.post(@UPDATE_LIST, {
-        id: id,
-        name: name,
-        position: i
+    $('.contact_name').each (i, element) =>
+      id = $(element).parent().parent().attr('id')
+      name = $(element).text()
+
+      $.ajax({
+        url: gon.update_list_path,
+        data: {
+          id: id,
+          name: name,
+          position: i
+        },
+        type: 'post'
       })
-    )
 
 
   update_colors: (id, red) ->
@@ -238,12 +241,12 @@ class @Contact
     $('.contact_update').click (e) =>
       contact_id = $(e.target).parent().parent().parent().attr('id')
       $.ajax({
-        url: gon.update_path,
+        url: gon.update_date_path,
         data: {
           id: contact_id
         },
         type: 'post',
-        success: (msg) =>
+        success: (data) =>
           @search_start('')
       })
 

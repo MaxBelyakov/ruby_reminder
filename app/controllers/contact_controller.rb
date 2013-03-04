@@ -1,5 +1,7 @@
 class ContactController < ApplicationController
-  def date_count(var_date)
+
+  # Computing each contact parameters
+  def define_parameters(var_date, red_value)
     str = ''
     date1 = var_date
     diff = Time.now.to_i - date1.to_time.to_i
@@ -22,41 +24,94 @@ class ContactController < ApplicationController
       str += 'less than 1 day ago'
     end
 
+    # Define color
+    if red_value == 0
+      color = "green"
+    elsif in_days > red_value
+      color = "red"
+    elsif in_days > red_value / 2
+      color = "yellow"
+    else
+      color = "green"
+    end
+
     result = {
       'date_diff' => str, 
       'years' => years, 
       'months' => months, 
       'days' => days,
-      'in_days' => in_days
+      'in_days' => in_days,
+      'color' => color
     }
+
   end
 
+
+  # Collecting array of contacts to draw on page
   def collect
     to_draw_array = []
     contacts_array = []
 
     if params['search_term'] == ''
-      contacts_array = Contact.all
+      contacts_array = Contact.find(:all, :order => "position")
     else
       contacts_array = Contact.find(:all, :conditions => ["name like ?", "%" + params['search_term'] + "%"])
     end
 
     contacts_array.each do |c|
-      red = c.red_val
-      date_array = date_count(c.last_date)
-      if red == 0
-        color = "green"
-      elsif date_array["in_days"] > red
-        color = "red"
-      elsif date_array["in_days"] > red / 2
-        color = "yellow"
-      else
-        color = "green"
-      end
-      to_draw_array.push({'id' => c.id, 'name' => c.name, 'color' => color, 'date' => date_array["date_diff"]})
+      param_array = define_parameters(c.last_date, c.red_val)
+      to_draw_array.push({'id' => c.id, 'name' => c.name, 'color' => param_array["color"], 'date' => param_array["date_diff"]})
     end
 
     render :json => { answer: to_draw_array }
+  end
+
+
+
+  def update_date
+    Contact.find_by_id(params['id']).update_attributes(:last_date => Date.today.to_s)
+    render :json => { }
+  end
+
+
+  # Update name and position of each contact
+  def update_list
+    Contact.find_by_id(params['id']).update_attributes(:name => params['name'], :position => params['position'])
+    render :json => { }
+  end
+
+
+
+  def update_color
+    Contact.find_by_id(params['id']).update_attributes(:red_val => params['red'])
+    render :json => { }
+  end
+
+
+  # Add new contact
+  def add_new
+    find_name = Contact.where(name: params['name'])
+    if find_name.length > 0
+      render :json => { answer: 'duplicate!' }
+    else
+      Contact.create(:name => params['name'], :last_date => Date.today.to_s, :position => params['position'], :red_val => 30)
+      render :json => { answer: 'added' }
+    end
+  end
+
+
+  # Delete contact
+  def delete
+    Contact.find_by_id(params['id']).try(:delete)
+    render :json => { }
+  end
+
+
+
+  def settings
+    input_length = params['name'].length
+    red_value = Contact.find_by_id(params['id']).red_val
+    render :json => {red_value: red_value, name: params['name'], length: input_length}
   end
 
 end

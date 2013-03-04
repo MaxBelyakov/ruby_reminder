@@ -1,12 +1,13 @@
 Reminder::Application.routes.draw do
   get 'contact/show'
 
-  post 'addnew' => 'addnew#index'
-  post 'delete' => 'delete#index'
+  post 'addnew' => 'contact#add_new'
+  post 'delete' => 'contact#delete'
   post 'contact' => 'contact#collect'
-  post 'update' => 'update#index'
-  post 'settings' => 'settings#index'
-  post 'update_color' => 'update_color#index'
+  post 'update_date' => 'contact#update_date'
+  post 'settings' => 'contact#settings'
+  post 'update_color' => 'contact#update_color'
+  post 'update_list' => 'contact#update_list'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
