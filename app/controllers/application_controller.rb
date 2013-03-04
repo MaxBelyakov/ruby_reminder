@@ -7,5 +7,6 @@ class ApplicationController < ActionController::Base
     gon.delete_path = delete_path
     gon.contact_path = contact_path
     gon.update_path = update_path
+    gon.settings_path = settings_path
   end
 end
