@@ -8,5 +8,6 @@ class ApplicationController < ActionController::Base
     gon.contact_path = contact_path
     gon.update_path = update_path
     gon.settings_path = settings_path
+    gon.update_color_path = update_color_path
   end
 end

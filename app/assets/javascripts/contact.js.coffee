@@ -21,14 +21,14 @@ class @Contact
         @add_new_contact()
 
     # Click function
-    $(@).click (e) =>
+    $(document).click (e) =>
       # if click outside the <input> and if <input> exists
       if ($(e.target).parent().attr('class') != 'contact_name' & $('#contact_input').length)
         @close_settings()
 
 
     # Key press functions
-    $(@).keydown (e) =>
+    $(document).keydown (e) =>
       # Contact name
       if ($(e.target).parent().attr('class') == 'contact_name')
         if (e.keyCode == 13)
@@ -145,15 +145,19 @@ class @Contact
 
 
   update_colors: (id, red) ->
-    $.post(@UPDATE_COLOR, {
-      id: id,
-      red: red
-    }, (data) ->
-      $('#contact_container_'+id).attr('class',data)
-    )
+    $.ajax({
+      url: gon.update_color_path,
+      data: {
+        id: id,
+        red: red
+      },
+      type: 'post',
+      success: (data) =>
+        $('#'+id).attr('class', data)
+    })
 
 
-  close_settings: () ->
+  close_settings: () =>
     # Find active settings
     object = $('#contact_input').parent()
     # Update colors
@@ -162,7 +166,8 @@ class @Contact
     if (contact_red == '')
       contact_red = 0
 
-    update_colors(object.attr('id'), contact_red)
+    @update_colors(object.parent().parent().attr('id'), contact_red)
+
     # Close <input> and save new values
     contact_text = object.find('#contact_input').attr('value')
     object.html(contact_text)

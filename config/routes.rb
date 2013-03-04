@@ -6,6 +6,7 @@ Reminder::Application.routes.draw do
   post 'contact' => 'contact#collect'
   post 'update' => 'update#index'
   post 'settings' => 'settings#index'
+  post 'update_color' => 'update_color#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
