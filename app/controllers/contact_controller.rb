@@ -53,7 +53,7 @@ class ContactController < ApplicationController
     contacts_array = []
 
     if params['search_term'] == ''
-      contacts_array = Contact.find(:all, :order => "position")
+      contacts_array = Contact.find(:all, :order => params["order"])
     else
       contacts_array = Contact.find(:all, :conditions => ["name like ?", "%" + params['search_term'] + "%"])
     end

@@ -54,11 +54,11 @@ class @Contact
 
     # Sort by name
     $('.contacts_title_name').click () =>
-      @sort_by_name()
+      @sort('name')
 
     # Sort by last contact
     $('.contacts_title_last_contact').click () =>
-      @sort_by_last_contact();
+      @sort('last_date')
 
 
   search_start: (search_term) ->
@@ -81,22 +81,18 @@ class @Contact
     })
 
 
-  sort_by_name: ->
-    $.post(@SEARCH, {
-      search_term: '',
-      order: 'name'
-    }, (data) =>
-      @draw_contacts(data)
-    )
+  sort: (order) ->
+    $.ajax({
+      url: gon.contact_path,
+      data: {
+        search_term: '',
+        order: order
+      },
+      type: 'post',
+      success: (data) =>
+        @draw_contacts(data['answer'])
+    })
 
-
-  sort_by_last_contact: ->
-    $.post(@SEARCH, {
-      search_term: '',
-      order: 'last_date'
-    }, (data) =>
-      @draw_contacts(data)
-    )
 
 
   add_new_contact: ->
