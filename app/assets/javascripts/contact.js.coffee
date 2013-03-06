@@ -173,9 +173,6 @@ class @Contact
 
     $('.container').slideDown(1000)
 
-    # Hide settings
-    $('.settings').hide()
-
     # Display edit, delete and update buttons
     $('#sortable div[class*=contact_container_]').hover (e) ->
       if $('#contact_input', @).length == 0
@@ -206,9 +203,9 @@ class @Contact
       )
 
       # Hide buttons
-      $(@).hide()
-      $(@).parent().find('.contact_delete').hide()
-      enable = 0
+      $('.contact_edit').hide()
+      $('.contact_delete').hide()
+      $('.contact_update').hide()
 
     $('.contact_delete').click (e) =>
       contact_id = $(e.target).parent().parent().parent().attr('id')
