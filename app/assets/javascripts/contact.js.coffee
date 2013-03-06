@@ -39,14 +39,14 @@ class @Contact
 
       # Red mark
       if ($(e.target).attr('id') == 'red_set')
-        # Allow: backspace, delete, tab, escape, and enter
-        if ( e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 27 || e.keyCode == 13 || (e.keyCode == 65 && e.ctrlKey == true) || (e.keyCode >= 35 && e.keyCode <= 39))
-          # let it happen, don't do anything
-          return
+        # Allow: backspace, delete, escape, enter, home, end, left, right
+        if e.keyCode in [46, 8, 27, 13, 35, 36, 37, 38, 39]
+          return # let it happen, don't do anything
         else
           # Ensure that it is a number and stop the keypress
           if (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105 ))
-            e.preDefault()
+            e.preventDefault()
+
 
     # Button actions
     $('#add_new_button').click () =>
@@ -69,29 +69,25 @@ class @Contact
       $('#sortable').sortable({ disabled: false })
 
     # Search contacts
-    $.ajax({
-      url: gon.contact_path,
-      data: {
+    $.post(
+      gon.contact_path,
+      {
         search_term: search_term,
         order: 'position'
-      },
-      type: 'post',
-      success: (data) =>
+      }, (data) =>
         @draw_contacts(data['answer'])
-    })
+    )
 
 
   sort: (order) ->
-    $.ajax({
-      url: gon.contact_path,
-      data: {
+    $.post(
+      gon.contact_path,
+      {
         search_term: '',
         order: order
-      },
-      type: 'post',
-      success: (data) =>
+      }, (data) =>
         @draw_contacts(data['answer'])
-    })
+    )
 
 
 
@@ -102,29 +98,25 @@ class @Contact
 
     # Find last position
     position = $('.contact_name').length
-    $.ajax({
-      url: gon.addnew_path,
-      data: {
+    $.post(
+      gon.addnew_path,
+      {
         name: new_contact,
         position: position
-      },
-      type: 'post',
-      success: (data) =>
+      }, (data) =>
         @search_start('')
         $('.answers_box_addnew').val('')
-    })
+    )
 
 
   delete_contact: (contact_id) ->
-    $.ajax({
-      url: gon.delete_path,
-      data: {
+    $.post(
+      gon.delete_path,
+      {
         id: contact_id
-      },
-      type: 'post',
-      success: (data) =>
+      }, (data) =>
         @search_start('')
-    })
+    )
 
 
   update_list: ->
@@ -132,28 +124,25 @@ class @Contact
       id = $(element).parent().parent().attr('id')
       name = $(element).text()
 
-      $.ajax({
-        url: gon.update_list_path,
-        data: {
+      $.post(
+        gon.update_list_path,
+        {
           id: id,
           name: name,
           position: i
-        },
-        type: 'post'
-      })
+        }
+      )
 
 
   update_color: (id, red) ->
-    $.ajax({
-      url: gon.update_color_path,
-      data: {
+    $.post(
+      gon.update_color_path,
+      {
         id: id,
         red: red
-      },
-      type: 'post',
-      success: (data) =>
+      }, (data) =>
         $('#' + id).attr('class', 'contact_container_' + data["answer"])
-    })
+    )
 
 
   close_settings: () =>
@@ -188,47 +177,38 @@ class @Contact
     $('.settings').hide()
 
     # Display edit, delete and update buttons
-    $('#sortable div[class*=contact_container_]').hover( ((e) ->
-      if $('#container_input', @).length == 0
+    $('#sortable div[class*=contact_container_]').hover (e) ->
+      if $('#contact_input', @).length == 0
         $('.contact_edit', @).show()
         $('.contact_delete', @).show()
         $('.contact_update', @).show()
-    ), ((e) ->
+    , (e) ->
       $('.contact_edit', @).hide()
       $('.contact_delete', @).hide()
       $('.contact_update', @).hide()
-    ) )
-
-    enable = 0
 
     $('.contact_edit').click (e) ->
-      if enable == 0
-        enable = 1
+      # Save contact name and contact_obj
+      contact_obj = $(@).parent().find('.contact_name')
+      contact_id = $(e.target).parent().parent().parent().attr('id')
 
-        # Save contact name and contact_obj
-        contact_obj = $(@).parent().find('.contact_name')
-        contact_id = $(e.target).parent().parent().parent().attr('id')
+      # Load current settings
+      $.post(
+        gon.settings_path,
+        {
+          id: contact_id,
+          name: contact_obj.html()
+        }, (data) =>
+          contact_obj.html(SMT['edit'](data))
+          $('#contact_input').focus()
+          # Deselect text inside
+          $('#contact_input').val($('#contact_input').val())
+      )
 
-        # Load current settings
-        $.ajax({
-          url: gon.settings_path,
-          data: {
-            id: contact_id,
-            name: contact_obj.html()
-          },
-          type: 'post',
-          success: (data) =>
-            
-            contact_obj.html(SMT['edit'](data))
-            $('#contact_input').focus()
-            # Deselect text inside
-            $('#contact_input').val($('#contact_input').val())
-        })
-
-        # Hide buttons
-        $(@).hide()
-        $(@).parent().find('.contact_delete').hide()
-        enable = 0
+      # Hide buttons
+      $(@).hide()
+      $(@).parent().find('.contact_delete').hide()
+      enable = 0
 
     $('.contact_delete').click (e) =>
       contact_id = $(e.target).parent().parent().parent().attr('id')
@@ -237,15 +217,13 @@ class @Contact
 
     $('.contact_update').click (e) =>
       contact_id = $(e.target).parent().parent().parent().attr('id')
-      $.ajax({
-        url: gon.update_date_path,
-        data: {
+      $.post(
+        gon.update_date_path,
+        {
           id: contact_id
-        },
-        type: 'post',
-        success: (data) =>
+        }, (data) =>
           @search_start('')
-      })
+      )
 
 
 $(document).ready () =>
