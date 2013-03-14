@@ -35,7 +35,7 @@ class @Contact
           @close_settings()
         else if (e.keyCode == 27)
           # Return old value
-          $(e.target).parent().html(contact_text)
+          @return_old_value($(e.target).closest('.contact_container').attr('id'))
 
       # Red mark
       if ($(e.target).attr('id') == 'red_set')
@@ -59,6 +59,16 @@ class @Contact
     # Sort by last contact
     $('.contacts_title_last_contact').click () =>
       @sort('last_date')
+
+
+  return_old_value: (contact_id) ->
+    $.post(
+      gon.old_value_path,
+      {
+        id: contact_id
+      }, (data) =>
+        $('#contact_name_' + contact_id).html(data['old_value'])
+    )
 
 
   search_start: (search_term) ->

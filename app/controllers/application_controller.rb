@@ -10,5 +10,6 @@ class ApplicationController < ActionController::Base
     gon.settings_path = settings_path
     gon.update_color_path = update_color_path
     gon.update_list_path = update_list_path
+    gon.old_value_path = old_value_path
   end
 end

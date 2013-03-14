@@ -8,6 +8,7 @@ Reminder::Application.routes.draw do
   post 'settings' => 'contact#settings'
   post 'update_color' => 'contact#update_color'
   post 'update_list' => 'contact#update_list'
+  post 'old_value' => 'contact#old_value'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

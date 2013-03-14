@@ -3,8 +3,7 @@ class ContactController < ApplicationController
   # Computing each contact parameters
   def define_parameters(var_date, red_value)
     str = ''
-    date1 = var_date
-    diff = Time.now.to_i - date1.to_time.to_i
+    diff = Date.today.to_time.to_i - var_date.to_time.to_i
     in_days = diff / (60*60*24) # full amount of days
     years = diff / (365*60*60*24)
     months = (diff - years * 365*60*60*24) / (30*60*60*24)
@@ -85,7 +84,7 @@ class ContactController < ApplicationController
   def update_color
     red = params['red'].to_i
     Contact.find_by_id(params['id']).update_attributes(:red_val => red)
-    last_date = Contact.find_by_id(params['id']).last_date.to_s
+    last_date = Contact.find_by_id(params['id']).last_date
     new_array = define_parameters(last_date, red)
     render :json => { answer: new_array['color'] }
   end
@@ -115,6 +114,12 @@ class ContactController < ApplicationController
     input_length = params['name'].length
     red_value = Contact.find_by_id(params['id']).red_val
     render :json => {red_value: red_value, name: params['name'], length: input_length}
+  end
+
+
+  def old_value
+    old_value = Contact.find_by_id(params['id']).name
+    render :json => { old_value: old_value }
   end
 
 end
