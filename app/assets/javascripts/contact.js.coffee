@@ -121,7 +121,7 @@ class @Contact
 
   update_list: ->
     $('.contact_name').each (i, element) =>
-      id = $(element).parent().parent().attr('id')
+      id = $(element).closest('.contact_container').attr('id')
       name = $(element).text()
 
       $.post(
@@ -141,24 +141,25 @@ class @Contact
         id: id,
         red: red
       }, (data) =>
-        $('#' + id).attr('class', 'contact_container_' + data["answer"])
+        $('#' + id).removeClass('red').removeClass('green').removeClass('yellow')
+        $('#' + id).addClass(data["answer"])
     )
 
 
   close_settings: () =>
     # Find active settings
-    object = $('#contact_input').parent()
+    contact_id = $('#contact_input').closest('.contact_container').attr('id')
     # Update colors
-    contact_red = object.find('#red_set').val()
+    contact_red = $('#red_set').val()
 
     if (contact_red == '')
       contact_red = 0
 
-    @update_color(object.parent().parent().attr('id'), contact_red)
+    @update_color(contact_id, contact_red)
 
     # Close <input> and save new values
-    contact_text = object.find('#contact_input').val( )
-    object.html(contact_text)
+    contact_text = $('#contact_input').val()
+    $('#contact_name_' + contact_id).html(contact_text)
 
     # Update list
     @update_list()
@@ -174,7 +175,7 @@ class @Contact
     $('.container').slideDown(1000)
 
     # Display edit, delete and update buttons
-    $('#sortable div[class*=contact_container_]').hover (e) ->
+    $('#sortable .contact_container').hover (e) ->
       if $('#contact_input', @).length == 0
         $('.contact_edit', @).show()
         $('.contact_delete', @).show()
@@ -186,8 +187,8 @@ class @Contact
 
     $('.contact_edit').click (e) ->
       # Save contact name and contact_obj
-      contact_obj = $(@).parent().find('.contact_name')
-      contact_id = $(e.target).parent().parent().parent().attr('id')
+      contact_id = $(@).closest('.contact_container').attr('id')
+      contact_obj = $('#contact_name_' + contact_id)
 
       # Load current settings
       $.post(
@@ -208,12 +209,12 @@ class @Contact
       $('.contact_update').hide()
 
     $('.contact_delete').click (e) =>
-      contact_id = $(e.target).parent().parent().parent().attr('id')
+      contact_id = $(e.target).closest('.contact_container').attr('id')
       if (confirm('Delete this field?'))
         @delete_contact(contact_id)
 
     $('.contact_update').click (e) =>
-      contact_id = $(e.target).parent().parent().parent().attr('id')
+      contact_id = $(e.target).closest('.contact_container').attr('id')
       $.post(
         gon.update_date_path,
         {

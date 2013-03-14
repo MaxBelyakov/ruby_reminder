@@ -63,7 +63,7 @@
   position: absolute;
 }
 
-.contact_container_green, .contact_container_yellow, .contact_container_red {
+.green, .yellow, .red {
   width: 560px;
   height: 26px;
   margin: 15px 0;
@@ -71,13 +71,13 @@
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
 }
-.contact_container_green {
+.green {
   background-color: rgba(0, 255, 0, 0.3);
 }
-.contact_container_yellow {
+.yellow {
   background-color: rgba(255, 255, 0, 0.3);
 }
-.contact_container_red {
+.red {
   background-color: rgba(255, 0, 0, 0.3);
 }
 
