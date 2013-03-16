@@ -54,7 +54,7 @@ class ContactController < ApplicationController
     if params['search_term'] == ''
       contacts_array = Contact.find(:all, :order => params["order"])
     else
-      contacts_array = Contact.find(:all, :conditions => ["name like ?", "%" + params['search_term'] + "%"])
+      contacts_array = Contact.find(:all, :conditions => ["lower(name) like ?", "%" + params['search_term'].downcase + "%"])
     end
 
     contacts_array.each do |c|
