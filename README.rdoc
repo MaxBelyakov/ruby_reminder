@@ -1,2 +1,1 @@
-A simple contacts manager program to be in touch with friends. Full description is available on http://maxkadyrov.com in projects section.
-Also, you can try php version http://maxkadyrov.com/programs/reminder/ by entering with test user account.
+A simple contacts manager program to be in touch with friends.
